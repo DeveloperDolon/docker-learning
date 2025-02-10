@@ -17,6 +17,21 @@ app.get("/", (req, res) => {
   ]);
 });
 
+app.get("/html", (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>HTML Response</title>
+      </head>
+      <body>
+        <h1>Welcome to the HTML Response Page</h1>
+        <p>This is a simple HTML page served by Express.</p>
+      </body>
+    </html>
+  `);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
