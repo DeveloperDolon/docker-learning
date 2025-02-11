@@ -1,4 +1,7 @@
 const express = require("express");
+const winston = require("winston");
+const expressWinston = require("express-winston");
+
 const app = express();
 const port = 3000;
 
@@ -30,6 +33,41 @@ app.get("/html", (req, res) => {
       </body>
     </html>
   `);
+});
+
+app.get("/error", (req, res, next) => {
+  next(new Error("This is an error and it should be logged to the console"));
+});
+
+app.get("/normal", (req, res) => {
+  res.write("This is a normal request, it should be logged to the console too");
+  res.end();
+});
+
+app.use(
+  expressWinston.logger({
+    transports: [new winston.transports.Console()],
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.json()
+    ),
+    meta: true,
+    msg: "HTTP {{req.method}} {{req.url}}",
+    expressFormat: true,
+    colorize: false,
+    ignoreRoute: function (req, res) {
+      return false;
+    }
+  })
+);
+
+// 🔥 Error-handling middleware (Add this at the end!)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: err.message || "Something went wrong!",
+    error: process.env.NODE_ENV === "development" ? err : {}
+  });
 });
 
 app.listen(port, () => {
