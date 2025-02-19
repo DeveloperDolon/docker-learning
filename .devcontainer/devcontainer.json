@@ -1,0 +1,23 @@
+{
+    "name": "test",
+    "image": "node:22.1.0",
+    "workspaceFolder": "/app",
+    "mounts": [
+      // Bind mount for your local project
+      "source=C:/Users/Dolon Roy/Desktop/learning/docker-learning/first-learning,target=/app,type=bind",
+  
+      // Named volume for logs (similar to: -v ts-docker-logs://app/logs)
+      "source=test-volume,target=/app/logs,type=volume",
+  
+      // Anonymous volume for node_modules (similar to: -v //app/node_modules)
+      "target=/app/node_modules,type=volume"
+    ],
+    "runArgs": [
+      "--name",
+      "test",
+      "-p",
+      "3000:3000",
+      "--rm" // Automatically remove the container after exiting VS Code
+    ],
+    "postCreateCommand": "npm install"
+  }
