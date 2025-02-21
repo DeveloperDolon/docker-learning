@@ -11,7 +11,7 @@ const app = express();
 const port = 3000;
 
 // Corrected access to environment variable
-const mongoDBURL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/mydemoDB';
+const mongoDBURL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/learning-docker';
 
 mongoose.connect(mongoDBURL)
   .then(() => console.log("Connection Successful"))
