@@ -1,11 +1,21 @@
 const express = require("express");
 const logger = require("./logger");
 const morgan = require("morgan");
+const dotenv = require("dotenv");
+const mongoose = require('mongoose');
+dotenv.config();
 
 const morganFormat = ":method :url :status :response-time ms";
 
 const app = express();
 const port = 3000;
+
+// Corrected access to environment variable
+const mongoDBURL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/mydemoDB';
+
+mongoose.connect(mongoDBURL)
+  .then(() => console.log("Connection Successful"))
+  .catch((err) => console.error("Connection Error:", err));
 
 app.use(
   morgan(morganFormat, {
